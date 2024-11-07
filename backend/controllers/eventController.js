@@ -7,6 +7,11 @@ export const createEvent = catchAsync(async (req, res, next) => {
   req.body.organizer = req.user.id;
   const event = await Event.create(req.body);
 
+  const populatedEvent = await Event.findById(event._id).populate(
+    "organizer",
+    "username email"
+  );
+
   await User.findByIdAndUpdate(req.user.id, {
     $push: { eventsOrganized: event._id },
   });
@@ -14,7 +19,7 @@ export const createEvent = catchAsync(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     data: {
-      event,
+      event: populatedEvent,
     },
   });
 });
@@ -49,7 +54,7 @@ export const getAllEvents = catchAsync(async (req, res, next) => {
 export const getEventById = catchAsync(async (req, res, next) => {
   const event = await Event.findById(req.params.id)
     .populate("organizer", "name email")
-    .populate("registeredVolunteers", "name email");
+    // .populate("registeredVolunteers", "name email");
 
   if (!event) {
     return next(new AppError("No event found with that ID", 404));
@@ -142,7 +147,7 @@ export const registerForEvent = catchAsync(async (req, res, next) => {
 export const getEventsByOrganizer = catchAsync(async (req, res, next) => {
   const events = await Event.find({ organizer: req.user.id })
     .sort("-date")
-    .populate("registeredVolunteers", "name email");
+    // .populate("registeredVolunteers", "name email");
 
   res.status(200).json({
     status: "success",
@@ -151,7 +156,7 @@ export const getEventsByOrganizer = catchAsync(async (req, res, next) => {
   });
 });
 
-// This is for getting all the events that a user has volunteered for
+// This is for getting all the events volunnteers
 export const getEventsByVolunteer = catchAsync(async (req, res, next) => {
   const events = await Event.find({
     registeredVolunteers: req.user.id,
@@ -162,3 +167,4 @@ export const getEventsByVolunteer = catchAsync(async (req, res, next) => {
     data: events,
   });
 });
+

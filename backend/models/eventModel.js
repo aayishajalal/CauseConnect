@@ -25,7 +25,7 @@ const eventSchema = new mongoose.Schema(
     organizer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      // required: true,
+      required: true,
     },
     category: {
       type: String,
@@ -43,12 +43,12 @@ const eventSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    registeredVolunteers: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
+    // registeredVolunteers: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "User",
+    //   },
+    // ],
     status: {
       type: String,
       enum: ["upcoming", "ongoing", "completed", "cancelled"],

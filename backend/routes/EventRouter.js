@@ -10,11 +10,12 @@ import {
   getEventsByOrganizer,
   getEventsByVolunteer,
 } from "../controllers/eventController.js";
+import protectedRoute from "../middleware/protected.js";
 
 const router = express.Router();
 
 // Protect all routes
-// router.use(protect);
+router.use(protectedRoute);
 
 router.route("/").post(createEvent).get(getAllEvents);
 
