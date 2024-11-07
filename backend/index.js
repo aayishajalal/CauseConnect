@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import connectToMongo from "./db/ConnectToMongo.js";
 import userRouter from "./routes/userRouter.js";
 import cookieParser from "cookie-parser";
-import eventRouter from "./routes/EventRouter.js";
+import eventRouter from "./routes/eventRouter.js";
 import AppError from "./utils/appError.js";
 import { globalErrorHandler } from "./controllers/errorController.js";
 import cors from "cors";

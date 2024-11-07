@@ -43,12 +43,13 @@ const eventSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    // registeredVolunteers: [
-    //   {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "User",
-    //   },
-    // ],
+    registeredVolunteers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: [true, "Event must have a registered volunteer"],
+      },
+    ],
     status: {
       type: String,
       enum: ["upcoming", "ongoing", "completed", "cancelled"],
