@@ -1,6 +1,7 @@
-import Event from "../model/Event";
-import { catchAsync } from "../utils/catchAsync";
-import AppError from "../utils/appError";
+import Event from "../models/eventModel.js";
+import { catchAsync } from "../utils/catchAsync.js";
+import AppError from "../utils/appError.js";
+import User from "../models/userModel.js";
 
 export const createEvent = catchAsync(async (req, res, next) => {
   req.body.organizer = req.user.id;
@@ -59,7 +60,6 @@ export const getEventById = catchAsync(async (req, res, next) => {
     data: event,
   });
 });
-
 
 export const updateEvent = catchAsync(async (req, res, next) => {
   const event = await Event.findById(req.params.id);
