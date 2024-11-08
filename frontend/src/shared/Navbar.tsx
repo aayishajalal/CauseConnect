@@ -9,12 +9,15 @@ const Navbar: React.FC = () => {
   return (
     <nav className="bg-blue-900 p-4 text-white">
       <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="font-bold text-xl">
-          Volunteer Finder
+        <Link to="/" className="font-bold text-xl font-semibold drop-shadow-md font-serif">
+          CauseConnect
         </Link>
         <div className="hidden md:flex space-x-4">
           <Link to="/" className="hover:text-yellow-400">
             Home
+          </Link>
+          <Link to="/events" className="hover:text-yellow-400">
+            Events
           </Link>
           <Link to="/about" className="hover:text-yellow-400">
             About

@@ -5,6 +5,7 @@ import Navbar from './shared/Navbar';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Homepage from './pages/Homepage';
+import Events from './pages/Events';
 const App: React.FC = () => {
   return (
     <Router>
@@ -13,6 +14,7 @@ const App: React.FC = () => {
       <div className="mt-16">
         <Routes>
           <Route path="/" element={<Homepage />} />
+          <Route path="/events" element={<Events />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Routes>

@@ -1,5 +1,4 @@
-import React from 'react';
-import HeroSection from "../pages/HeroSection";
+import HeroSection from "../components/HeroSection";
 
 const Homepage = () => {
   return (
