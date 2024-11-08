@@ -1,17 +1,16 @@
-
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './shared/Navbar';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Homepage from './pages/Homepage';
-import Events from './pages/Events';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Navbar from "./shared/Navbar";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Homepage from "./pages/Homepage";
+import Events from "./pages/Events";
 const App: React.FC = () => {
   return (
     <Router>
       <Navbar />
-      
-      <div className="mt-16">
+
+      <div>
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/events" element={<Events />} />

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -66,13 +65,13 @@ export default function EventHero() {
             <h1 className="text-4xl font-extrabold tracking-tight text-blue-900 sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-md">
               COMMUNITY DRIVES
             </h1>
-            <p className="max-w-[600px] text-xl font-medium text-blue-900/80 md:text-2xl">
+            <p className="max-w-[600px] text-xl  font-medium text-blue-900/80 md:text-2xl">
               MAKE A DIFFERENCE IN THE COMMUNITY!
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl">
-            <Card className="p-6 bg-white/80 backdrop-blur-sm hover:bg-white transition-all duration-300">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl cursor-pointer">
+            <Card className="p-6 bg-white/80 backdrop-blur-sm hover:bg-white transition-all duration-300 ">
               <Users className="w-12 h-12 mb-4 text-blue-900" />
               <h3 className="text-xl font-bold text-blue-900 mb-2">Connect</h3>
               <p className="text-blue-900/80">

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MenuIcon, XIcon } from '@heroicons/react/outline';
+import { Heart } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +10,8 @@ const Navbar: React.FC = () => {
   return (
     <nav className="bg-blue-900 p-4 text-white">
       <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="font-bold text-xl font-semibold drop-shadow-md font-serif">
+        <Link to="/" className=" text-xl font-semibold drop-shadow-md font-serif flex items-center">
+          <Heart className="w-6 h-6 mr-2 text-yellow-400" fill="currentColor" />
           CauseConnect
         </Link>
         <div className="hidden md:flex space-x-4">
