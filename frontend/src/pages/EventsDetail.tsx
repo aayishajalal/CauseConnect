@@ -1,10 +1,15 @@
+import EventDetailsCard from "@/components/EventsComponents/EventDetailsCard";
 
-const EventsDetail = () => {
+import Map from "@/components/map/Map";
+
+
+const EventDetails = () => {
   return (
-    <div>
-      
+    <div className="flex gap-3 justify-evenly items-center">
+     <EventDetailsCard />
+     <Map />
     </div>
-  )
-}
+  );
+};
 
-export default EventsDetail
+export default EventDetails;
