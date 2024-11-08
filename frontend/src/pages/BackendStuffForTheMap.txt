@@ -1,6 +1,6 @@
-//Something of this sort needs to be implemented in the backend 
+//Something of this sort can be be implemented in the backend for displaying the map
 
-//  If you are building the backend for this functionality, here’s how you might implement it:
+//  
     GeoSpatial Search in MongoDB: MongoDB allows you to use geospatial queries to find events near a location.
     API Endpoint: Create a backend API (e.g., Node.js with Express) that accepts latitude and longitude as query
     parameters and returns nearby volunteering events.
