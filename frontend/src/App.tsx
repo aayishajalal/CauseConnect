@@ -5,7 +5,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Homepage from "./pages/Homepage";
 import Events from "./pages/Events";
-import EventsDetail from "./pages/EventsDetail";
+import EventDetails from "./pages/EventDetails";
 const App: React.FC = () => {
   return (
     <Router>
@@ -14,7 +14,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/events" element={<Events />} />
-          <Route path="/eventsinfo" element={<EventsDetail />} />
+          <Route path="/events/:id" element={<EventDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Routes>
