@@ -1,0 +1,35 @@
+//Something of this sort needs to be implemented in the backend 
+
+//  If you are building the backend for this functionality, here’s how you might implement it:
+    GeoSpatial Search in MongoDB: MongoDB allows you to use geospatial queries to find events near a location.
+    API Endpoint: Create a backend API (e.g., Node.js with Express) that accepts latitude and longitude as query
+    parameters and returns nearby volunteering events.
+    Here’s an example Node.js (Express) server with MongoDB geospatial search:
+
+-------------------------------------------------------------------------------------------------------------------
+
+const express = require('express');
+const mongoose = require('mongoose');
+const VolunteeringOpportunity = require('./models/VolunteeringOpportunity');
+
+const app = express();
+const port = 5000;
+
+mongoose.connect('mongodb://localhost:27017/volunteering', { useNewUrlParser: true, useUnifiedTopology: true });
+
+app.get('/volunteer', async (req, res) => {
+  const { lat, lng } = req.query;
+
+  const opportunities = await VolunteeringOpportunity.find({
+    location: {
+      $near: {
+        $geometry: { type: 'Point', coordinates: [parseFloat(lng), parseFloat(lat)] },
+        $maxDistance: 5000, // 5km radius
+      },
+    },
+  });
+
+  res.json({ opportunities });
+});
+
+app.listen(port, () => console.log(`Server running on port ${port}`));
