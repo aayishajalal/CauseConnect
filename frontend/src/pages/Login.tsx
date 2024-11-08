@@ -7,7 +7,7 @@ import axios from 'axios';
 import Button from '../shared/Button';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -16,15 +16,15 @@ const Login: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/users/login', {
-        email,
+        username,
         password,
       }, {
         withCredentials: true, // Allows cookies if needed for authentication
       });
 
       console.log('Login successful:', response.data);
-      localStorage.setItem('token', response.data.token); // Store the token if you’re using JWT
-      navigate('/'); // Redirect to homepage after login
+      localStorage.setItem('token', response.data.token);
+      navigate('/'); 
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.error || 'Login failed');
@@ -44,12 +44,12 @@ const Login: React.FC = () => {
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">Email</label>
             <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              placeholder="Enter your email"
+              placeholder="Enter your username"
               required
             />
           </div>

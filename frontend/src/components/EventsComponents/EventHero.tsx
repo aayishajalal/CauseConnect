@@ -69,7 +69,6 @@ export default function EventHero() {
               MAKE A DIFFERENCE IN THE COMMUNITY!
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl cursor-pointer">
             <Card className="p-6 bg-white/80 backdrop-blur-sm hover:bg-white transition-all duration-300 ">
               <Users className="w-12 h-12 mb-4 text-blue-900" />
@@ -98,10 +97,14 @@ export default function EventHero() {
               </p>
             </Card>
           </div>
-
-          <Button className="h-14 rounded-full bg-blue-900 px-10 text-xl font-semibold text-yellow-400 hover:bg-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-            VOLUNTEER NOW!
-          </Button>
+          <div className="flex gap-4">
+            <Button className="h-14 rounded-full bg-blue-900 px-10 text-xl font-semibold text-yellow-400 hover:bg-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+              VOLUNTEER NOW!
+            </Button>
+            <Button className="h-14 rounded-full bg-yellow-500 px-10 text-xl font-bold text-blue-900 hover:bg-yellow-400 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+              CREATE EVENT
+            </Button>
+          </div>
         </div>
       </div>
     </section>

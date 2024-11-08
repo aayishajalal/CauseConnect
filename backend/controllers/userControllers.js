@@ -28,6 +28,7 @@ export const signup = async (req, res) => {
                 username:newUser.username,
                 email:newUser.email,
                 role:newUser.role,
+                token:req.cookies.jwt
            })
    
        } else{
@@ -54,14 +55,15 @@ export const login = async (req, res) => {
             _id:user._id,
             username:user.username,
             email:user.email,
-            role:user.role
+            role:user.role,
+            token:req.cookies.jwt
         })
        } catch (error) {
          console.log(error)
        }
 }
 
-
+    
 export const logout= (req,res)=>{
     try {
         res.cookie("jwt","",{maxAge:0});

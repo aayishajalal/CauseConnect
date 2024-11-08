@@ -25,8 +25,8 @@ const Signup: React.FC = () => {
       });
 
       console.log('Signup successful:', response.data);
-      localStorage.setItem('token', response.data.token); // Store token if needed
-      navigate('/'); // Redirect to homepage or login page after signup
+      localStorage.setItem('token', response.data.token); 
+      navigate('/'); 
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.error || 'Signup failed');
