@@ -6,6 +6,8 @@ import Signup from "./pages/Signup";
 import Homepage from "./pages/Homepage";
 import Events from "./pages/Events";
 import EventDetails from "./pages/EventDetails";
+import Dashboard from "./components/EventsComponents/Dashboard";
+import CreateEventForm from "./components/EventsComponents/CreateEventForm";
 const App: React.FC = () => {
   return (
     <Router>
@@ -17,6 +19,9 @@ const App: React.FC = () => {
           <Route path="/events/:id" element={<EventDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/create-event" element={<CreateEventForm />} />
+
         </Routes>
       </div>
     </Router>

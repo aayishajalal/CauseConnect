@@ -14,9 +14,11 @@ import {
   Calendar,
   MapPin,
 } from "lucide-react";
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export default function EventHero() {
   const [icons, setIcons] = useState<JSX.Element[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const iconComponents = [Heart, Star, Zap, Leaf, Sun, Droplets];
@@ -101,7 +103,10 @@ export default function EventHero() {
             <Button className="h-14 rounded-full bg-blue-900 px-10 text-xl font-semibold text-yellow-400 hover:bg-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
               VOLUNTEER NOW!
             </Button>
-            <Button className="h-14 rounded-full bg-yellow-500 px-10 text-xl font-bold text-blue-900 hover:bg-yellow-400 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+            <Button 
+              onClick={() => navigate('/create-event')} 
+              className="h-14 rounded-full bg-yellow-500 px-10 text-xl font-bold text-blue-900 hover:bg-yellow-400 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            >
               CREATE EVENT
             </Button>
           </div>
