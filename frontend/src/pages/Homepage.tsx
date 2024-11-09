@@ -23,6 +23,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Carousel from "../components/ui/carousel";
 import AboutUs from "../components/AboutUs";
+import Map from "../components/map/Map";
 
 // import EventsStack from "../components/ui/eventPagination";
 
@@ -89,6 +90,7 @@ const Homepage: React.FC = () => {
       <section className="volunteer-cards">
         <VolunteerCards />
       </section>
+      <section><Map height={""} width={""} /></section>
       <section className="faq-section">
         <Faq />
       </section>
