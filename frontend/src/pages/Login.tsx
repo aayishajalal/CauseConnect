@@ -2,7 +2,7 @@
 // route for login
 
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Button from '../shared/Button';
 
@@ -11,6 +11,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +24,7 @@ const Login: React.FC = () => {
 
       console.log('Login successful:', response.data);
       localStorage.setItem('token', response.data.token);
-      navigate('/');
+      navigate('/events');
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.error || 'Login failed');
