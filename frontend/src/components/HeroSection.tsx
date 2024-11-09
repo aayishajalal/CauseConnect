@@ -15,7 +15,7 @@ const Hero: React.FC = () => {
     >
       <div className="absolute inset-0 "></div>
 
-      <div className="relative z-10 text-white max-w-2xl px-4">
+      <div className="relative z-10 font-serif text-blue-900 max-w-2xl px-4">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">
           Welcome to Volunteer Finder
         </h1>

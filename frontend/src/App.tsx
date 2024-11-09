@@ -8,6 +8,7 @@ import Events from "./pages/Events";
 import EventDetails from "./pages/EventDetails";
 import Dashboard from "./components/EventsComponents/Dashboard";
 import CreateEventForm from "./components/EventsComponents/CreateEventForm";
+import Footer from "./shared/Footer";
 const App: React.FC = () => {
   return (
     <Router>
@@ -24,6 +25,7 @@ const App: React.FC = () => {
 
         </Routes>
       </div>
+      <Footer />
     </Router>
   );
 };

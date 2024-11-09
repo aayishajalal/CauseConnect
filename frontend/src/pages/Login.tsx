@@ -15,16 +15,15 @@ const Login: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/users/login', {
-        username,
-        password,
-      }, {
-        withCredentials: true, // Allows cookies if needed for authentication
-      });
+      const response = await axios.post(
+        'http://localhost:5000/api/users/login',
+        { username, password },
+        { withCredentials: true } // Allows cookies for authentication
+      );
 
       console.log('Login successful:', response.data);
       localStorage.setItem('token', response.data.token);
-      navigate('/'); 
+      navigate('/');
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.error || 'Login failed');
@@ -35,14 +34,29 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md">
-        <h2 className="text-2xl font-semibold text-center text-blue-900 mb-6">Login to Your Account</h2>
+    <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-center relative"
+      style={{
+        backgroundImage: `url('https://img.freepik.com/premium-photo/world-charity-day-backgrounds_1198941-10278.jpg?w=740')`,
+      }}
+    >
+      {/* Overlay to create a faded effect */}
+      <div className="absolute inset-0 bg-black opacity-30"></div>
+
+      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md z-10">
+        <h2 className="text-2xl font-semibold text-center text-blue-900 mb-6">
+          Login to Your Account
+        </h2>
         {error && <p className="text-red-600 text-center mb-4">{error}</p>}
 
         <form onSubmit={handleLogin}>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">Email</label>
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="email"
+            >
+              Username
+            </label>
             <input
               type="text"
               id="username"
@@ -54,7 +68,12 @@ const Login: React.FC = () => {
             />
           </div>
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">Password</label>
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="password"
+            >
+              Password
+            </label>
             <input
               type="password"
               id="password"
@@ -67,7 +86,10 @@ const Login: React.FC = () => {
           </div>
           <div className="flex items-center justify-between">
             <Button text="Log In" type="submit" />
-            <Link to="/signup" className="inline-block align-baseline font-bold text-sm text-blue-900 hover:text-blue-800">
+            <Link
+              to="/signup"
+              className="inline-block align-baseline font-bold text-sm text-blue-900 hover:text-blue-800"
+            >
               Create an Account
             </Link>
           </div>
