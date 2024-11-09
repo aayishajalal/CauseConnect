@@ -7,20 +7,38 @@ import eventRouter from "./routes/eventRouter.js";
 import AppError from "./utils/appError.js";
 import { globalErrorHandler } from "./controllers/errorController.js";
 import cors from "cors";
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import fs from 'fs';
+
+// Configure __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 app.use(cors({
-  origin: 'http://localhost:5173', // Replace with your frontend URL
-  credentials: true, // This is important for cookies
+  origin: 'http://localhost:5173',
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 app.use(express.json());
 app.use(cookieParser());
+
+// Create uploads directory if it doesn't exist
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Serve static files from uploads directory
+app.use('/uploads', express.static(uploadDir));
+
 app.use("/api/users", userRouter);
 app.use("/api/events", eventRouter);
 

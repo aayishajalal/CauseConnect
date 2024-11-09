@@ -4,24 +4,50 @@ import AppError from "../utils/appError.js";
 import User from "../models/userModel.js";
 
 export const createEvent = catchAsync(async (req, res, next) => {
-  req.body.organizer = req.user.id;
-  const event = await Event.create(req.body);
+  try {
+    // Debug log
+    console.log('Received request body:', req.body);
+    console.log('Received files:', req.file);
 
-  const populatedEvent = await Event.findById(event._id).populate(
-    "organizer",
-    "username email"
-  );
+    // Validate required fields
+    const requiredFields = ['title', 'description', 'date', 'location', 'category', 'requiredVolunteers', 'impact'];
+    for (const field of requiredFields) {
+      if (!req.body[field]) {
+        console.log(`Missing field: ${field}`); // Debug log
+        return next(new AppError(`Please provide ${field}`, 400));
+      }
+    }
 
-  await User.findByIdAndUpdate(req.user.id, {
-    $push: { eventsOrganized: event._id },
-  });
+    // Create event data object
+    const eventData = {
+      ...req.body,
+      organizer: req.user.id,
+      image: req.file ? req.file.path : undefined
+    };
 
-  res.status(201).json({
-    status: "success",
-    data: {
-      event: populatedEvent,
-    },
-  });
+    console.log('Event data to be saved:', eventData); // Debug log
+
+    const event = await Event.create(eventData);
+
+    const populatedEvent = await Event.findById(event._id).populate(
+      "organizer",
+      "username email"
+    );
+
+    await User.findByIdAndUpdate(req.user.id, {
+      $push: { eventsOrganized: event._id },
+    });
+
+    res.status(201).json({
+      status: "success",
+      data: {
+        event: populatedEvent,
+      },
+    });
+  } catch (error) {
+    console.error('Error in createEvent:', error);
+    return next(new AppError(error.message, 500));
+  }
 });
 
 export const getAllEvents = catchAsync(async (req, res, next) => {
