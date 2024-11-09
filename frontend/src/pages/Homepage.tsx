@@ -22,6 +22,9 @@ import VolunteerCards from "@/components/ui/volunteercards";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Carousel from "../components/ui/carousel";
+import AboutUs from "../components/AboutUs";
+
+// import EventsStack from "../components/ui/eventPagination";
 
 // Register GSAP's ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -81,6 +84,8 @@ const Homepage: React.FC = () => {
       <section className="hero-section">
         <HeroSection />
       </section>
+      <section><AboutUs /></section>
+      {/* <section><EventsStack /> </section> */}
       <section className="volunteer-cards">
         <VolunteerCards />
       </section>
