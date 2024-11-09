@@ -83,3 +83,13 @@ export const getUsersForSideBar = async (req, res) =>{
        console.log(error);
     }
 }
+export const getCurrentUsers = async (req, res) =>{
+    try {
+       const loggedInUser = req.user._id;
+       const CurrUser=await User.findOne({ _id: { loggedInUser } }).select("-password"); //find all the users expect that equal to the thaat user id which loggeid in user
+       res.status(200).json(CurrUser);
+       console.log(CurrUser)
+    } catch (error) {
+       console.log(error);
+    }
+}

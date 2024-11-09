@@ -13,6 +13,7 @@ import { Card } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import EventDialog from "./Refferal";
 
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -156,7 +157,9 @@ const EventDetailsCard = () => {
         >
           Contact Organizer
         </Button>
+        <EventDialog id = {id}/>
       </div>
+      
     </Card>
   );
 };
