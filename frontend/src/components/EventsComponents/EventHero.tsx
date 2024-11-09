@@ -14,9 +14,9 @@ import {
   Calendar,
   MapPin,
 } from "lucide-react";
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-export default function EventHero() {
+export default function EventHero({onScrollToEvents}) {
   const [icons, setIcons] = useState<JSX.Element[]>([]);
   const navigate = useNavigate();
 
@@ -100,7 +100,7 @@ export default function EventHero() {
             </Card>
           </div>
           <div className="flex gap-4">
-            <Button className="h-14 rounded-full bg-blue-900 px-10 text-xl font-semibold text-yellow-400 hover:bg-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+            <Button onClick={onScrollToEvents} className="h-14 rounded-full bg-blue-900 px-10 text-xl font-semibold text-yellow-400 hover:bg-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
               VOLUNTEER NOW!
             </Button>
             <Button 

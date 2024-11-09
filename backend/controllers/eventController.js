@@ -71,7 +71,7 @@ export const getAllEvents = catchAsync(async (req, res, next) => {
   }
 
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
+  const limit = parseInt(req.query.limit) || 100;
   const skip = (page - 1) * limit;
   query = query.skip(skip).limit(limit);
 
@@ -144,36 +144,36 @@ export const deleteEvent = catchAsync(async (req, res, next) => {
 });
 
 // Register for Event
-export const registerForEvent = catchAsync(async (req, res, next) => {
-  const event = await Event.findById(req.params.id);
+// export const registerForEvent = catchAsync(async (req, res, next) => {
+//   const event = await Event.findById(req.params.id);
 
-  if (!event) {
-    return next(new AppError("No event found with that ID", 404));
-  }
+//   if (!event) {
+//     return next(new AppError("No event found with that ID", 404));
+//   }
 
-  if (event.registeredVolunteers.length >= event.requiredVolunteers) {
-    return next(
-      new AppError("Event is already full, cannot register for it", 400)
-    );
-  }
+//   if (event.registeredVolunteers.length >= event.requiredVolunteers) {
+//     return next(
+//       new AppError("Event is already full, cannot register for it", 400)
+//     );
+//   }
 
-  if (event.registeredVolunteers.includes(req.user.id)) {
-    return next(new AppError("You are already registered for this event", 400));
-  }
-  event.registeredVolunteers.push(req.user.id);
-  await event.save();
-  // Add event to user's participated events
-  await User.findByIdAndUpdate(req.user.id, {
-    $push: { eventsParticipated: event._id },
-  });
+//   if (event.registeredVolunteers.includes(req.user.id)) {
+//     return next(new AppError("You are already registered for this event", 400));
+//   }
+//   event.registeredVolunteers.push(req.user.id);
+//   await event.save();
+//   // Add event to user's participated events
+//   await User.findByIdAndUpdate(req.user.id, {
+//     $push: { eventsParticipated: event._id },
+//   });
 
-  res.status(200).json({
-    status: "success",
-    data: {
-      event,
-    },
-  });
-});
+//   res.status(200).json({
+//     status: "success",
+//     data: {
+//       event,
+//     },
+//   });
+// });
 
 // for organizer dashboard ...
 

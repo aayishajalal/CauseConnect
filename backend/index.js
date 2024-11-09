@@ -4,6 +4,7 @@ import connectToMongo from "./db/ConnectToMongo.js";
 import userRouter from "./routes/userRouter.js";
 import cookieParser from "cookie-parser";
 import eventRouter from "./routes/eventRouter.js";
+import volunteerRoutes from "./routes/volunteerRouter.js";
 import AppError from "./utils/appError.js";
 import { globalErrorHandler } from "./controllers/errorController.js";
 import cors from "cors";
@@ -12,16 +13,16 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import fs from 'fs';
 
-// Configure __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
 dotenv.config();
 
+
 const PORT = process.env.PORT || 5000;
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -29,18 +30,18 @@ app.use(cors({
 
 app.use(express.json());
 app.use(cookieParser());
+app.use('/uploads', express.static('uploads'));
 
-// Create uploads directory if it doesn't exist
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Serve static files from uploads directory
 app.use('/uploads', express.static(uploadDir));
 
 app.use("/api/users", userRouter);
 app.use("/api/events", eventRouter);
+app.use("/api/events/:id/volunteer", volunteerRoutes);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));

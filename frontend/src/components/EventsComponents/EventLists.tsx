@@ -39,9 +39,9 @@ const EventLists = () => {
         : "from-yellow-500 to-yellow-600";
 
     return (
-      <div className="absolute -right-[46px] top-[32px] z-10 w-[170px] transform rotate-45">
+      <div className="absolute -right-[40px] top-[20px] z-20 w-[170px] transform rotate-45 overflow-hidden">
         <div
-          className={`w-full text-center py-1 bg-gradient-to-r ${statusColor} text-white font-bold text-sm uppercase shadow-md`}
+          className={`py-1.5 text-center bg-gradient-to-r ${statusColor} text-white text-xs font-semibold uppercase tracking-wider shadow-lg`}
         >
           {status}
         </div>
@@ -61,11 +61,12 @@ const EventLists = () => {
         });
         setEvents(res.data.data);
         setFilteredEvents(res.data.data);
+        console.log(events);
       } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 401) {
           navigate("/login");
         } else {
-          setError("Failed to fetch events. Please try again later.");
+          console.error("Failed to fetch events. Please try again later.");
         }
       } finally {
         setLoading(false);
@@ -179,7 +180,7 @@ const EventLists = () => {
   }
 
   return (
-    <div className="bg-green-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8 mt-20">
+    <div className="bg-blue-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8 mt-20">
       <div className="max-w-7xl mx-auto">
         {renderSearchAndFilter({
           searchQuery,
@@ -221,48 +222,56 @@ const EventLists = () => {
             filteredEvents.map((event) => (
               <Card
                 key={event._id}
-                className="relative overflow-hidden hover:shadow-xl transition-all duration-300 border-green-200 bg-white group"
+                className="relative overflow-hidden hover:shadow-xl transition-all duration-300 border-green-200 bg-white group h-full flex flex-col"
               >
                 <div className="relative h-48 overflow-hidden">
                   <img
-                    src="https://imgs.search.brave.com/mH6MfrGC1RPsopHZR1mXN874vZgTIPdLzNpnXdw_qAg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9maWxl/cy5ldmVudGluZ3Zv/bHVudGVlcnMuY29t/L2Nhcm91c2VsL3Zv/bHVudGVlcnM4Lmpw/Zw"
+                    src={
+                      event.image
+                        ? `http://localhost:5000/uploads/${event.image.split('/').pop()}`
+                        : "https://img.freepik.com/premium-photo/world-charity-day-backgrounds_1198941-10278.jpg?w=740"
+                    }
                     alt={event?.title}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    onError={(e) => {
+                      e.currentTarget.src = "https://img.freepik.com/premium-photo/world-charity-day-backgrounds_1198941-10278.jpg?w=740";
+                    }}
                   />
                   {getStatusRibbon(event?.status)}
                 </div>
 
-                <CardContent className="p-6">
+                <CardContent className="p-6 flex-grow">
                   <Badge
                     className="mb-2 bg-green-100 text-green-800 hover:bg-green-200"
                     variant="secondary"
                   >
                     {getCategoryIcon(event?.category)}
-                    <span className="ml-1">{event?.category}</span>
+                    <span className="ml-1 capitalize">{event?.category}</span>
                   </Badge>
-                  <h3 className="text-2xl font-bold text-green-900 mb-2">
+                  <h3 className="text-xl font-bold text-green-900 mb-2 line-clamp-2">
                     {event.title}
                   </h3>
-                  <p className="text-green-700 mb-4">{event.description}</p>
+                  <p className="text-green-700 mb-4 line-clamp-3">{event.description}</p>
                   <div className="space-y-2 text-sm text-green-600">
                     <div className="flex items-center">
-                      <Calendar className="w-4 h-4 mr-2" />
+                      <Calendar className="w-4 h-4 mr-2 flex-shrink-0" />
                       {new Date(event.date).toLocaleDateString()}
                     </div>
                     <div className="flex items-center">
-                      <MapPin className="w-4 h-4 mr-2" />
-                      {event.location}
+                      <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
+                      <span className="line-clamp-1">{event.location}</span>
                     </div>
                     <div className="flex items-center">
-                      <Users className="w-4 h-4 mr-2" />
+                      <Users className="w-4 h-4 mr-2 flex-shrink-0" />
                       {event.registeredVolunteers?.length} volunteers registered
                     </div>
                   </div>
                 </CardContent>
-                <CardFooter className="p-6 bg-green-100">
+
+                <CardFooter className="p-6 bg-green-50 mt-auto">
                   <Button
                     onClick={() => handleLearnMore(event._id)}
-                    className="w-full bg-blue-600 hover:bg-green-700 text-white"
+                    className="w-full bg-green-600 hover:bg-green-700 text-white"
                   >
                     {event?.status === "ongoing" || event?.status === "upcoming"
                       ? "Learn More"
