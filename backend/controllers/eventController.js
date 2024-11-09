@@ -29,6 +29,13 @@ export const createEvent = catchAsync(async (req, res, next) => {
 
     const event = await Event.create(eventData);
 
+    // Update user's createdEvents array
+    await User.findByIdAndUpdate(
+      req.user.id,
+      { $push: { createdEvents: event._id } },
+      { new: true }
+    );
+
     const populatedEvent = await Event.findById(event._id).populate(
       "organizer",
       "username email"
