@@ -9,6 +9,9 @@ import {
   FiLogOut,
 } from "react-icons/fi";
 
+import { FaRegBell } from "react-icons/fa";
+import { IoIosClose } from "react-icons/io";
+
 interface User {
   username: string;
   email: string;
@@ -24,13 +27,25 @@ interface Event {
   status: string;
 }
 
+// Define Notification type
+interface Notification {
+  id: string;
+  message: string;
+  read: boolean;
+  createdAt: string;
+}
+
 const Dashboard = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
   });
+
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [openNotifications, setOpenNotifications] = useState(false);
 
   useEffect(() => {
     // TODO: Fetch user data from your API
@@ -44,6 +59,7 @@ const Dashboard = () => {
           const decodedToken: any = jwtDecode(userToken);
 
           userId = decodedToken?.userId;
+          setUserId(userId);
           const response = await fetch("http://localhost:5000/api/users/curr", {
             method: "POST",
             headers: {
@@ -77,12 +93,61 @@ const Dashboard = () => {
     // Redirect to login page
   };
 
+  // useEffect(() => {
+  //   const savedNotifications = localStorage.getItem(`notifications_${userId}`);
+  //   if (savedNotifications) {
+  //     setNotifications(JSON.parse(savedNotifications));
+  //   }
+  // }, [userId]);
+
+  // // Save notifications to localStorage whenever they change
+  // useEffect(() => {
+  //   if (userId) {
+  //     localStorage.setItem(
+  //       `notifications_${userId}`,
+  //       JSON.stringify(notifications)
+  //     );
+  //   }
+  // }, [notifications, userId]);
+
+  // to add a new notification automatically every 10 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      addNotification();
+    }, 10000); // Add new notification every 10 seconds
+
+    return () => clearInterval(interval); // Clear interval on component unmount
+  }, []);
+
+  const addNotification = () => {
+    const newNotification: Notification = {
+      id: Date.now().toString(),
+      message: "You have a new event notification!",
+      read: false,
+      createdAt: new Date().toISOString(),
+    };
+
+    // Function to add a new notification
+    setNotifications((prev) => {
+      // Add new notification and keep only the latest 5 notifications
+      const updatedNotifications = [newNotification, ...prev];
+      return updatedNotifications.slice(0, 5); // Limit to 5 notifications
+    });
+  };
+
+  // Mark a notification as read
+  const markAsRead = (notificationId: string) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === notificationId ? { ...n, read: true } : n))
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Profile Section */}
         <div className="bg-white rounded-lg shadow p-6 mb-8">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">My Dashboard</h1>
               <p className="text-gray-600">
@@ -91,18 +156,29 @@ const Dashboard = () => {
             </div>
             <div className="flex gap-3">
               <button
+                onClick={() => setOpenNotifications(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              >
+                <FaRegBell className="w-4 h-4" />
+              </button>
+
+              <button
                 onClick={() => setIsEditing(!isEditing)}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
               >
                 <FiEdit2 className="w-4 h-4" />
-                {isEditing ? "Cancel" : "Edit Profile"}
+                {isEditing ? (
+                  "Cancel"
+                ) : (
+                  <p className="hidden lg:block">Edit Profile</p>
+                )}
               </button>
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
               >
                 <FiLogOut className="w-4 h-4" />
-                Logout
+                <p className="hidden lg:block">Logout</p>
               </button>
             </div>
           </div>
@@ -254,6 +330,45 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+
+        {openNotifications && (
+          <div className="absolute top-[185px] right-10 w-64 bg-white shadow-lg rounded-lg p-4">
+            <div className="flex flex-row items-center justify-between mx-2">
+              <h3 className="text-lg font-semibold mb-2">Notifications</h3>
+
+              <button
+                onClick={() => setOpenNotifications(false)}
+                className="p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              >
+                <IoIosClose size={23} className="w-4 h-4" />
+              </button>
+            </div>
+            <hr className="my-2" />
+            <ul>
+              {notifications.map((notification) => (
+                <li
+                  key={notification.id}
+                  className={`p-2 mb-2 rounded-lg ${
+                    notification.read ? "bg-gray-100" : "bg-blue-50"
+                  }`}
+                >
+                  <p>{notification.message}</p>
+                  <small className="block text-gray-500">
+                    {new Date(notification.createdAt).toLocaleString()}
+                  </small>
+                  {!notification.read && (
+                    <button
+                      onClick={() => markAsRead(notification.id)}
+                      className="text-blue-500 hover:underline mt-1"
+                    >
+                      Mark as Read
+                    </button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
