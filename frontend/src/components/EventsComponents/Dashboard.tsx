@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-
+import { useNavigate } from 'react-router-dom';
 import {
   FiEdit2,
   FiCalendar,
@@ -27,7 +27,7 @@ interface Event {
   status: string;
 }
 
-// Define Notification type
+//Notification type
 interface Notification {
   id: string;
   message: string;
@@ -46,6 +46,8 @@ const Dashboard = () => {
 
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [openNotifications, setOpenNotifications] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // TODO: Fetch user data from your API
@@ -88,9 +90,10 @@ const Dashboard = () => {
   };
 
   const handleLogout = () => {
-    // TODO: Implement logout logic
-    // Clear local storage/cookies
-    // Redirect to login page
+    // TODO: Implement logout logic  Clear local storage/cookies Redirect to login page
+    localStorage.removeItem("token");
+    navigate('/');
+    
   };
 
   // useEffect(() => {
@@ -155,13 +158,14 @@ const Dashboard = () => {
               </p>
             </div>
             <div className="flex gap-3">
-              <button
+              {user && (
+                <>
+                <button
                 onClick={() => setOpenNotifications(true)}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
               >
                 <FaRegBell className="w-4 h-4" />
               </button>
-
               <button
                 onClick={() => setIsEditing(!isEditing)}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
@@ -180,6 +184,8 @@ const Dashboard = () => {
                 <FiLogOut className="w-4 h-4" />
                 <p className="hidden lg:block">Logout</p>
               </button>
+                </>
+              )}
             </div>
           </div>
 

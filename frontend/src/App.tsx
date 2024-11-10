@@ -15,6 +15,7 @@ import Dashboard from "./components/EventsComponents/Dashboard";
 import CreateEventForm from "./components/EventsComponents/CreateEventForm";
 import Footer from "./shared/Footer";
 import VolunteerPage from "./pages/VolunterPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 
 const App: React.FC = () => {
@@ -28,7 +29,11 @@ const App: React.FC = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/events" element={<Events />} />
           <Route path="/events/:id" element={<EventDetails />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
           <Route path="/create-event" element={<CreateEventForm />} />
           <Route path="/volunteer/:id" element={<VolunteerPage />} />
         </Routes>
