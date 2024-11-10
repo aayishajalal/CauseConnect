@@ -26,12 +26,12 @@ const Navbar: React.FC = () => {
               <Link to="/events" className="text-white hover:text-yellow-400 transition-colors">
                 Events
               </Link>
-              <Link to="/about" className="text-white hover:text-yellow-400 transition-colors">
+              {/* <Link to="/about" className="text-white hover:text-yellow-400 transition-colors">
                 About
               </Link>
               <Link to="/contact" className="text-white hover:text-yellow-400 transition-colors">
                 Contact
-              </Link>
+              </Link> */}
             </div>
             
             <div className="flex items-center space-x-4">

@@ -87,7 +87,7 @@ const Footer: React.FC = () => {
             onClick={openModal}
             className="bg-yellow-400 text-blue-900 font-semibold py-2 px-4 rounded-lg shadow-lg hover:bg-yellow-300 transition duration-300 text-sm"
           >
-            Rate This Website
+            How useful was this?
           </button>
         </div>
           </div>

@@ -1,17 +1,39 @@
-import { FC, useState, FormEvent } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { FC, useState, FormEvent } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
+import { CalendarIcon, MapPinIcon, UsersIcon, ImageIcon, SparklesIcon } from 'lucide-react'
+import { format } from 'date-fns'
+import { cn } from "@/lib/utils"
+import { Calendar } from "@/components/ui/calendar"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 const formatDateTimeForInput = (dateString: string) => {
-  if (!dateString) return '';
-  const date = new Date(dateString);
-  return date.toISOString().slice(0, 16); // Format: "YYYY-MM-DDThh:mm"
-};
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  return date.toISOString().slice(0, 16) // Format: "YYYY-MM-DDThh:mm"
+}
 
 const CreateEventForm: FC = () => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     title: '',
     category: '',
@@ -21,76 +43,40 @@ const CreateEventForm: FC = () => {
     image: null as File | null,
     requiredVolunteers: '',
     impact: ''
-  });
+  })
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    console.log(`Input change - ${name}: ${value}`);
-    setFormData(prev => {
-      const newData = {
-        ...prev,
-        [name]: value
-      };
-      console.log('Updated form data:', newData);
-      return newData;
-    });
-  };
+  const handleInputChange = (name: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
+    const file = e.target.files?.[0] || null
     setFormData(prev => ({
       ...prev,
       image: file
-    }));
-  };
+    }))
+  }
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    console.log('Form Data Values:', {
-      title: formData.title,
-      description: formData.description,
-      date: formData.date,
-      location: formData.location,
-      category: formData.category,
-      requiredVolunteers: formData.requiredVolunteers,
-      impact: formData.impact,
-      image: formData.image
-    });
-
-    if (!formData.title) console.log('Missing title');
-    if (!formData.description) console.log('Missing description');
-    if (!formData.date) console.log('Missing date');
-    if (!formData.location) console.log('Missing location');
-    if (!formData.category) console.log('Missing category');
-    if (!formData.requiredVolunteers) console.log('Missing requiredVolunteers');
-    if (!formData.impact) console.log('Missing impact');
+    e.preventDefault()
+    setLoading(true)
 
     try {
-      const submitData = new FormData();
-
-      const formattedDate = formData.date ? new Date(formData.date).toISOString() : '';
+      const submitData = new FormData()
+      const formattedDate = formData.date ? new Date(formData.date).toISOString() : ''
       
-      submitData.append('title', formData.title);
-      submitData.append('description', formData.description);
-      submitData.append('date', formattedDate);
-      submitData.append('location', formData.location);
-      submitData.append('category', formData.category);
-      submitData.append('requiredVolunteers', formData.requiredVolunteers.toString());
-      submitData.append('impact', formData.impact);
-      
-      if (formData.image) {
-        submitData.append('image', formData.image);
-      }
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key === 'image' && value instanceof File) {
+          submitData.append(key, value)
+        } else if (typeof value === 'string') {
+          submitData.append(key, value)
+        }
+      })
 
-      console.log('FormData being sent:');
-      for (let [key, value] of submitData.entries()) {
-        console.log(`${key}: ${value}`);
-      }
-
-      const response = await axios.post(
+      await axios.post(
         'http://localhost:5000/api/events',
         submitData,
         {
@@ -99,25 +85,23 @@ const CreateEventForm: FC = () => {
             'Content-Type': 'multipart/form-data',
           },
         }
-      );
+      )
 
-      console.log('Event created successfully:', response.data);
-      navigate('/events');
-      
+      toast.success('Event created successfully!')
+      navigate('/events')
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        console.error('Error details:', err.response?.data);
-        setError(err.response?.data?.message || 'Failed to create event');
+        toast.error(err.response?.data?.message || 'Failed to create event')
         if (err.response?.status === 401) {
-          navigate('/login');
+          navigate('/login')
         }
       } else {
-        setError('An unexpected error occurred');
+        toast.error('An unexpected error occurred')
       }
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const categories = [
     "cleaning",
@@ -126,144 +110,180 @@ const CreateEventForm: FC = () => {
     "environment",
     "social",
     "other"
-  ];
+  ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-8">
-      <form onSubmit={handleSubmit} className="max-w-2xl mx-auto p-6 bg-white rounded-2xl shadow-xl space-y-4">
-        {error && (
-          <div className="p-3 bg-red-100 text-red-700 rounded-lg mb-4">
-            {error}
-          </div>
-        )}
-        
-        <h2 className="text-2xl font-bold text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-          Create New Event
-        </h2>
-        
-        <div className="grid grid-cols-2 gap-4">
-          <div className="group">
-            <label className="block mb-1 font-medium text-gray-700 group-hover:text-blue-600 transition-colors">Title</label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleInputChange}
-              className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 outline-none hover:border-blue-400"
-              required
-            />
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-12">
+      <Card className="max-w-4xl mx-auto p-8 bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl">
+        <CardHeader>
+          <CardTitle className="text-4xl font-bold text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">
+            Create Inspiring Event
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-2">
+                <Label htmlFor="title" className="text-sm font-medium text-gray-700">
+                  Event Title
+                </Label>
+                <Input
+                  id="title"
+                  name="title"
+                  value={formData.title}
+                  onChange={(e) => handleInputChange('title', e.target.value)}
+                  required
+                  className="w-full"
+                  placeholder="Enter captivating event title"
+                />
+              </div>
 
-          <div className="group">
-            <label className="block mb-1 font-medium text-gray-700 group-hover:text-blue-600 transition-colors">Category</label>
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleInputChange}
-              className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 outline-none hover:border-blue-400 bg-white"
-              required
+              <div className="space-y-2">
+                <Label htmlFor="category" className="text-sm font-medium text-gray-700">
+                  Category
+                </Label>
+                <Select name="category" value={formData.category} onValueChange={(value) => handleInputChange('category', value)}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="description" className="text-sm font-medium text-gray-700">
+                  Description
+                </Label>
+                <Textarea
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
+                  rows={4}
+                  required
+                  className="w-full"
+                  placeholder="Describe your event in vivid detail"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="date" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                  <CalendarIcon className="w-4 h-4" />
+                  Date and Time
+                </Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !formData.date && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {formData.date ? format(new Date(formData.date), "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      selected={formData.date ? new Date(formData.date) : undefined}
+                      onSelect={(date) => handleInputChange('date', date ? date.toISOString() : '')}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="location" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                  <MapPinIcon className="w-4 h-4" />
+                  Location
+                </Label>
+                <Input
+                  id="location"
+                  name="location"
+                  value={formData.location}
+                  onChange={(e) => handleInputChange('location', e.target.value)}
+                  placeholder="Enter event location"
+                  required
+                  className="w-full"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="image" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                  <ImageIcon className="w-4 h-4" />
+                  Event Image
+                </Label>
+                <Input
+                  id="image"
+                  type="file"
+                  name="image"
+                  onChange={handleFileChange}
+                  accept="image/*"
+                  className="w-full"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="requiredVolunteers" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                  <UsersIcon className="w-4 h-4" />
+                  Required Volunteers
+                </Label>
+                <Input
+                  id="requiredVolunteers"
+                  type="number"
+                  name="requiredVolunteers"
+                  value={formData.requiredVolunteers}
+                  onChange={(e) => handleInputChange('requiredVolunteers', e.target.value)}
+                  min="1"
+                  placeholder="Enter number of volunteers needed"
+                  required
+                  className="w-full"
+                />
+              </div>
+
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="impact" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                  <SparklesIcon className="w-4 h-4" />
+                  Impact
+                </Label>
+                <Textarea
+                  id="impact"
+                  name="impact"
+                  value={formData.impact}
+                  onChange={(e) => handleInputChange('impact', e.target.value)}
+                  rows={3}
+                  placeholder="Describe the positive impact of this event"
+                  required
+                  className="w-full"
+                />
+              </div>
+            </div>
+
+            <Separator />
+
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-6 rounded-xl font-medium text-lg
+                hover:from-blue-600 hover:to-purple-700 transform hover:scale-[1.02] transition-all duration-300 
+                focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg"
             >
-              <option value="">Select a category</option>
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="group col-span-2">
-            <label className="block mb-1 font-medium text-gray-700 group-hover:text-blue-600 transition-colors">Description</label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 outline-none hover:border-blue-400"
-              rows={4}
-              required
-            />
-          </div>
-
-          <div className="group">
-            <label className="block mb-1 font-medium text-gray-700">Date and Time</label>
-            <input
-              type="datetime-local"
-              name="date"
-              value={formData.date}
-              onChange={(e) => {
-                console.log('Date input value:', e.target.value);
-                handleInputChange(e);
-              }}
-              className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
-            />
-          </div>
-
-          <div className="group">
-            <label className="block mb-1 font-medium text-gray-700">Location</label>
-            <input
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleInputChange}
-              placeholder="Enter event location"
-              className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
-            />
-          </div>
-
-          <div className="group">
-            <label className="block mb-1 font-medium text-gray-700 group-hover:text-blue-600 transition-colors">Event Image</label>
-            <input
-              type="file"
-              name="image"
-              onChange={handleFileChange}
-              accept="image/*"
-              className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 outline-none hover:border-blue-400"
-            />
-          </div>
-
-          <div className="group">
-            <label className="block mb-1 font-medium text-gray-700">Required Volunteers</label>
-            <input
-              type="number"
-              name="requiredVolunteers"
-              value={formData.requiredVolunteers}
-              onChange={handleInputChange}
-              min="1"
-              placeholder="Enter number of volunteers needed"
-              className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
-            />
-          </div>
-
-          <div className="group col-span-2">
-            <label className="block mb-1 font-medium text-gray-700">Impact</label>
-            <textarea
-              name="impact"
-              value={formData.impact}
-              onChange={handleInputChange}
-              className="w-full p-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              rows={3}
-              placeholder="Describe the impact of this event"
-              required
-            />
-          </div>
-        </div>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className={`w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-2 px-6 rounded-lg font-medium 
-            hover:from-blue-600 hover:to-purple-700 transform hover:scale-[1.02] transition-all duration-300 
-            focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg
-            ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-        >
-          {loading ? 'Creating Event...' : 'Create Event'}
-        </button>
-      </form>
+              {loading ? 'Creating Event...' : 'Create Inspiring Event'}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
-  );
-};
+  )
+}
 
-export default CreateEventForm; 
+export default CreateEventForm

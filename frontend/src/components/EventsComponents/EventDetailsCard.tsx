@@ -12,23 +12,28 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import EventDialog from "./Refferal";
 
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
-
-const EventDetailsCard = () => {
+function EventDetailsCard() {
+  const navigate = useNavigate();
   const [eventInfo, setEventInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { id } = useParams();
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const handleVolunteer = () => {
+    navigate(`/volunteer/${id}`);
+  };
 
   useEffect(() => {
     const getEventById = async () => {
@@ -65,12 +70,12 @@ const EventDetailsCard = () => {
 
   return (
     <Card className="max-w-2xl p-6 mb-8 bg-white/95 backdrop-blur-sm shadow-xl rounded-xl space-y-6 transition-all duration-300 hover:shadow-2xl">
-      {/* Image Section with Overlay */}
       <div className="relative group">
         <img
           src={
-            eventInfo?.image ||
-            "https://img.freepik.com/premium-photo/world-charity-day-backgrounds_1198941-10278.jpg?w=740"
+            eventInfo?.image
+              ? `http://localhost:5000/uploads/${eventInfo.image.split('/').pop()}`
+              : "https://img.freepik.com/premium-photo/world-charity-day-backgrounds_1198941-10278.jpg?w=740"
           }
           alt="Event"
           className="w-full h-56 object-cover rounded-xl shadow-md transition-transform duration-300 group-hover:scale-[1.02]"
@@ -147,7 +152,10 @@ const EventDetailsCard = () => {
 
       {/* Action Buttons */}
       <div className="flex gap-4 pt-2">
-        <Button className="flex-1 h-10 rounded-full bg-blue-900 text-base font-semibold text-yellow-400 hover:bg-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl">
+        <Button
+          onClick={handleVolunteer}
+          className="flex-1 h-10 rounded-full bg-blue-900 hover:bg-blue-800 text-base font-semibold text-yellow-400 transition-all duration-300 shadow-lg hover:shadow-xl"
+        >
           Volunteer Now
           <ArrowRight className="ml-2 w-4 h-4" />
         </Button>

@@ -67,3 +67,5 @@ const Map: React.FC<MapProps> = ({ height, width }) => {
 };
 
 export default Map;
+
+

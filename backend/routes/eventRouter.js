@@ -10,7 +10,7 @@ import {
   getEventById,
   updateEvent,
   deleteEvent,
-  registerForEvent,
+  // registerForEvent,
   getEventsByOrganizer,
   getEventsByVolunteer,
 } from "../controllers/eventController.js";
@@ -66,6 +66,6 @@ router.get("/volunteered", getEventsByVolunteer);
 
 router.route("/:id").get(getEventById).patch(updateEvent).delete(deleteEvent);
 
-router.post("/:id/register", registerForEvent);
+// router.post("/:id/register", registerForEvent);
 
 export default router;
