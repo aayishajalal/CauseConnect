@@ -21,8 +21,9 @@ import VolunteerCards from "@/components/ui/volunteercards";
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Carousel from "../components/ui/carousel";
+
 import AboutUs from "../components/AboutUs";
+import ArcCarousel from "../components/ui/carousel";
 
 // import EventsStack from "../components/ui/eventPagination";
 
@@ -92,7 +93,7 @@ const Homepage: React.FC = () => {
       <section className="faq-section">
         <Faq />
       </section>
-     <Carousel />
+     <ArcCarousel />
     </div>
   );
 };
