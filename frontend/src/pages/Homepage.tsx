@@ -1,38 +1,19 @@
-// import HeroSection from "../components/HeroSection";
-// import Faq from "../components/Faq";
-// import VolunteerCards from "@/components/ui/volunteercards";
-
-// const Homepage = () => {
-//   return (
-//     <>
-//     <HeroSection />
-//     <VolunteerCards />
-//     <Faq />
-//     </>
-//   );
-// };
-
-// export default Homepage;
-
 import React, { useEffect } from "react";
 import HeroSection from "../components/HeroSection";
 import Faq from "../components/Faq";
 import VolunteerCards from "@/components/ui/volunteercards";
+import ExtraLanding from "../components/extraLanding";
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import AboutUs from "../components/AboutUs";
 import ArcCarousel from "../components/ui/carousel";
+import TopVolunteers from "../components/ui/carousel";
 
-// import EventsStack from "../components/ui/eventPagination";
-
-// Register GSAP's ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
 const Homepage: React.FC = () => {
   useEffect(() => {
-    // Define animations for each section with smooth transitions
     gsap.fromTo(
       ".hero-section",
       { opacity: 0, y: 50 },
@@ -81,19 +62,21 @@ const Homepage: React.FC = () => {
 
   return (
     <div className="homepage-container">
-     
       <section className="hero-section">
         <HeroSection />
       </section>
-      <section><AboutUs /></section>
+      
       {/* <section><EventsStack /> </section> */}
       <section className="volunteer-cards">
         <VolunteerCards />
       </section>
+      <section>
+          <ExtraLanding />
+      </section>
       <section className="faq-section">
         <Faq />
       </section>
-     <ArcCarousel />
+      <TopVolunteers/>
     </div>
   );
 };

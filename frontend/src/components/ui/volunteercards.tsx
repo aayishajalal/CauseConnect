@@ -1,105 +1,70 @@
-
-
-// import React, { useEffect } from 'react';
-// import AOS from 'aos';
-// import 'aos/dist/aos.css';
-
-// interface Volunteer {
-//     name: string;
-//     feedback: string;
-// }
-
-// const volunteers: Volunteer[] = [
-//     { name: 'John Doe', feedback: 'Great event, very well organized! Had a fantastic time volunteering and meeting new people.' },
-//     { name: 'Jane Smith', feedback: 'Loved the community spirit! It was rewarding to be part of something so positive.' },
-//     { name: 'Michael Brown', feedback: 'Amazing opportunity to meet new people and give back to the community.' },
-//     { name: 'Emily White', feedback: 'Very fulfilling experience! Felt great to contribute in a meaningful way.' },
-//     { name: 'Robert Green', feedback: 'Great networking opportunities and an enjoyable event overall. Highly recommend!' },
-// ];
-
-// const VolunteerCards: React.FC = () => {
-//     useEffect(() => {
-//         AOS.init({
-//             duration: 800,
-//             easing: 'ease-in-out',
-//             once: true,
-//         });
-//     }, []);
-
-//     return (
-//         <div className="bg-blue-900 container mx-auto p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-y-10 gap-x-6">
-//             {volunteers.map((volunteer, index) => (
-//                 <div
-//                     key={index}
-//                     className={`relative bg-yellow-400 p-6 rounded-lg shadow-md border border-gray-200 max-w-xs mx-auto transition-transform transform hover:scale-105 ${
-//                         index % 2 === 0 ? 'translate-y-4' : '-translate-y-4'
-//                     }`}
-//                     data-aos="fade-up"
-//                 >
-//                     {/* Chat Bubble Tail */}
-//                     <div
-//                         className="absolute w-4 h-4 bg-yellow-400 left-4 -bottom-2 rotate-45 border-l border-b border-gray-200"
-//                     ></div>
-
-//                     <h3 className="text-lg font-semibold text-gray-800">{volunteer.name}</h3>
-//                     <p className="mt-2 text-gray-600 text-sm leading-relaxed">{volunteer.feedback}</p>
-//                 </div>
-//             ))}
-//         </div>
-//     );
-// };
-
-// export default VolunteerCards;
-
-import React, { useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import React from 'react'
+import { User, Quote } from 'lucide-react'
 
 interface Volunteer {
-    name: string;
-    feedback: string;
+  name: string
+  feedback: string
 }
 
 const volunteers: Volunteer[] = [
-    { name: 'John Doe', feedback: 'Great event, very well organized! Had a fantastic time volunteering and meeting new people.' },
-    { name: 'Jane Smith', feedback: 'Loved the community spirit! It was rewarding to be part of something so positive.' },
-    { name: 'Michael Brown', feedback: 'Amazing opportunity to meet new people and give back to the community.' },
-    { name: 'Emily White', feedback: 'Very fulfilling experience! Felt great to contribute in a meaningful way.' },
-    { name: 'Robert Green', feedback: 'Great networking opportunities and an enjoyable event overall. Highly recommend!' },
-];
+  { name: 'John Doe', feedback: 'Great event, very well organized! Had a fantastic time volunteering and meeting new people.' },
+  { name: 'Jane Smith', feedback: 'Loved the community spirit! It was rewarding to be part of something so positive.' },
+  { name: 'Michael Brown', feedback: 'Amazing opportunity to meet new people and give back to the community.' },
+  { name: 'Emily White', feedback: 'Very fulfilling experience! Felt great to contribute in a meaningful way.' },
+  { name: 'Robert Green', feedback: 'Great networking opportunities and an enjoyable event overall. Highly recommend!' },
+]
 
 const VolunteerCards: React.FC = () => {
-    useEffect(() => {
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
-            once: true,
-        });
-    }, []);
-
-    return (
-        <div className="bg-blue-900 container mx-auto p-6">
-            <h2 className="text-3xl font-bold text-white text-center mb-8">User Feedbacks</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {volunteers.map((volunteer, index) => (
-                    <div
-                        key={index}
-                        className="relative p-4 rounded-lg shadow-lg border border-gray-200 max-w-xs mx-auto transition-transform transform hover:scale-105 hover:translate-y-2 hover:bg-white"
-                        data-aos="fade-up"
-                    >
-                        {/* Background behind each card */}
-                        <div className="absolute inset-0 bg-yellow-400  rounded-lg transition-all hover:opacity-0"></div>
-
-                        {/* Main card content */}
-                        <div className="relative z-10">
-                            <h3 className="text-lg font-semibold text-gray-800">{volunteer.name}</h3>
-                            <p className="mt-2 text-gray-600 text-sm leading-relaxed">{volunteer.feedback}</p>
-                        </div>
-                    </div>
-                ))}
-            </div>
+  return (
+    <div className="bg-gradient-to-b from-white to-indigo-50/50 py-20 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold mb-4">
+            <span className="bg-blue-800 text-transparent bg-clip-text">
+              Volunteer Stories
+            </span>
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Hear from our amazing volunteers about their experiences and the impact they've made in their communities.
+          </p>
         </div>
-    );
-};
 
-export default VolunteerCards;
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {volunteers.map((volunteer, index) => (
+            <div
+              key={index}
+              className="group relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+            >
+              {/* Decorative elements */}
+              <div className="absolute -top-3 -right-3 w-24 h-24 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full blur-2xl opacity-0 group-hover:opacity-70 transition-opacity" />
+              <Quote className="absolute top-4 right-4 w-8 h-8 text-indigo-100" />
+
+              <div className="relative">
+                <div className="flex items-center mb-6">
+                  <di className="flex-shrink-0">
+                    <div className="relative">
+                      <div className="w-12 h-12 bg-yellow-300 rounded-full flex items-center justify-center">
+                        <User className="h-6 w-6 text-white" />
+                      </div>
+                    </div>
+                  </di  >
+                  <div className="ml-4">
+                    <h3 className="text-lg font-semibold text-gray-900">{volunteer.name}</h3>
+                    <p className="text-sm text-gray-500">Volunteer</p>
+                  </div>
+                </div>
+                <blockquote className="relative">
+                  <p className="text-gray-600 leading-relaxed">
+                    "{volunteer.feedback}"
+                  </p>
+                </blockquote>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default VolunteerCards

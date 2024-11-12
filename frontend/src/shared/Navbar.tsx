@@ -16,13 +16,11 @@ const Navbar: React.FC = () => {
     <nav className="bg-blue-900 shadow-lg">
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
-          {/* Logo */}
           <Link to="/" className="text-xl font-semibold text-white font-serif flex items-center space-x-2">
             <Heart className="w-6 h-6 text-yellow-400" fill="currentColor" />
-            <span>CauseConnect</span>
+            <span>Connect4Good</span>
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <div className="flex items-center space-x-6">
               <Link to="/" className="text-white hover:text-yellow-400 transition-colors">
@@ -31,12 +29,14 @@ const Navbar: React.FC = () => {
               <Link to="/events" className="text-white hover:text-yellow-400 transition-colors">
                 Events
               </Link>
-              {/* <Link to="/about" className="text-white hover:text-yellow-400 transition-colors">
+              <Link to="/about" className="text-white hover:text-yellow-400 transition-colors">
                 About
               </Link>
-              <Link to="/contact" className="text-white hover:text-yellow-400 transition-colors">
-                Contact
-              </Link> */}
+              <Link to="/leaderboard" className="block text-white hover:text-yellow-400 transition-colors py-2">
+              Leaderboard
+            </Link>
+           
+           
             </div>
             <div className="flex items-center space-x-4">
               <Link to="/dashboard" className="text-white hover:text-yellow-400 transition-colors flex items-center space-x-1">
@@ -82,9 +82,10 @@ const Navbar: React.FC = () => {
             <Link to="/about" className="block text-white hover:text-yellow-400 transition-colors py-2">
               About
             </Link>
-            <Link to="/contact" className="block text-white hover:text-yellow-400 transition-colors py-2">
-              Contact
+            <Link to="/leaderboard" className="block text-white hover:text-yellow-400 transition-colors py-2">
+              Leaderboard
             </Link>
+           
             <Link to="/dashboard" className="flex items-center text-white hover:text-yellow-400 transition-colors py-2 space-x-1">
               <UserCircleIcon className="w-7 h-7" />
               <span>Dashboard</span>

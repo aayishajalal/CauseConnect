@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
           <div className="w-full md:w-1/3 mb-4 pl-10">
             <Link to="/" className="text-xl font-semibold drop-shadow-md font-serif flex items-center">
               <Heart className="w-6 h-6 mr-2 text-yellow-400" fill="currentColor" />
-              CauseConnect
+              Connect4Good
             </Link>
             <p className="text-sm p-5">
               Your go-to platform to connect with NGOs and initiatives for a meaningful impact.

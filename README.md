@@ -1,5 +1,9 @@
-# CauseConnect
+# Connect4Good
 Cause Connect is a web application that helps users find and connect with volunteer opportunities organized by local NGOs and community initiatives. The app aims to bridge the gap between volunteers and organizations, allowing for easy event discovery, registration, and participation.
+
+
+
+![Community drive](image.png)
 
 
 # Table of Contents
@@ -36,7 +40,8 @@ Prerequisites
 Installation
 Clone the repository:
 
-git clone https://github.com/yourusername/cause-connect.git
+[git clone https://github.com/anuj846k/cause-connect.git](https://github.com/anuj846k/CauseConnect)
+
 cd cause-connect
 
 Install dependencies for both frontend and backend:

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import {
   FiEdit2,
   FiCalendar,
@@ -11,6 +11,8 @@ import {
 
 import { FaRegBell } from "react-icons/fa";
 import { IoIosClose } from "react-icons/io";
+import VolunteerCertificateGenerator from "./certificateGen";
+import axios from "axios";
 
 interface User {
   username: string;
@@ -38,6 +40,8 @@ interface Notification {
 const Dashboard = () => {
   const [user, setUser] = useState<User | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [registeredEvents, setRegisteredEvents] = useState<Event[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
@@ -83,6 +87,29 @@ const Dashboard = () => {
     fetchUserData();
   }, []);
 
+ const fetchEvents = async () => {
+  if (!userId) {
+    console.error("User ID is not defined");
+    return;
+  }
+
+  try {
+    const [organizedEvents, volunteeredEvents] = await Promise.all([
+      axios.get("http://localhost:5000/api/events/organized", {
+        withCredentials: true
+      }),
+      axios.get("http://localhost:5000/api/events/volunteered", {
+        withCredentials: true
+      })
+    ]);
+
+    setEvents(organizedEvents.data.data);
+    setRegisteredEvents(volunteeredEvents.data.data);
+  } catch (error) {
+    console.error("Error fetching events:", error);
+  }
+};
+
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Implement update user API call
@@ -92,26 +119,8 @@ const Dashboard = () => {
   const handleLogout = () => {
     // TODO: Implement logout logic  Clear local storage/cookies Redirect to login page
     localStorage.removeItem("token");
-    navigate('/');
-    
+    navigate("/");
   };
-
-  // useEffect(() => {
-  //   const savedNotifications = localStorage.getItem(`notifications_${userId}`);
-  //   if (savedNotifications) {
-  //     setNotifications(JSON.parse(savedNotifications));
-  //   }
-  // }, [userId]);
-
-  // // Save notifications to localStorage whenever they change
-  // useEffect(() => {
-  //   if (userId) {
-  //     localStorage.setItem(
-  //       `notifications_${userId}`,
-  //       JSON.stringify(notifications)
-  //     );
-  //   }
-  // }, [notifications, userId]);
 
   // to add a new notification automatically every 10 seconds
   useEffect(() => {
@@ -160,30 +169,30 @@ const Dashboard = () => {
             <div className="flex gap-3">
               {user && (
                 <>
-                <button
-                onClick={() => setOpenNotifications(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-              >
-                <FaRegBell className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setIsEditing(!isEditing)}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-              >
-                <FiEdit2 className="w-4 h-4" />
-                {isEditing ? (
-                  "Cancel"
-                ) : (
-                  <p className="hidden lg:block">Edit Profile</p>
-                )}
-              </button>
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
-              >
-                <FiLogOut className="w-4 h-4" />
-                <p className="hidden lg:block">Logout</p>
-              </button>
+                  <button
+                    onClick={() => setOpenNotifications(true)}
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    <FaRegBell className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => setIsEditing(!isEditing)}
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    <FiEdit2 className="w-4 h-4" />
+                    {isEditing ? (
+                      "Cancel"
+                    ) : (
+                      <p className="hidden lg:block">Edit Profile</p>
+                    )}
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                  >
+                    <FiLogOut className="w-4 h-4" />
+                    <p className="hidden lg:block">Logout</p>
+                  </button>
                 </>
               )}
             </div>
@@ -336,6 +345,8 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+
+        <VolunteerCertificateGenerator />
 
         {openNotifications && (
           <div className="absolute top-[185px] right-10 w-64 bg-white shadow-lg rounded-lg p-4">

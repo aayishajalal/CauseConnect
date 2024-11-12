@@ -1,68 +1,90 @@
-import React, { useState } from "react";
+import React from "react"
+import { ChevronDown } from "lucide-react"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
+const faqItems = [
+  {
+    question: "What is Volunteer Finder?",
+    answer: "Volunteer Finder helps you connect with local NGOs and initiatives so you can make a positive impact in your community.",
+  },
+  {
+    question: "How do I get started?",
+    answer: "Simply sign up to create a profile, browse through available volunteer opportunities, and start making a difference.",
+  },
+  {
+    question: "Are there any costs involved?",
+    answer: "No, Volunteer Finder is completely free to use for volunteers.",
+  },
+  {
+    question: "How do I connect with NGOs?",
+    answer: "Once you're signed up, you can directly contact NGOs and initiatives listed on the platform to explore volunteer opportunities.",
+  },
+]
 
 const Faq: React.FC = () => {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-
-  const toggleAccordion = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index);
-  };
-
-  const faqItems = [
-    {
-      question: "What is Volunteer Finder?",
-      answer:
-        "Volunteer Finder helps you connect with local NGOs and initiatives so you can make a positive impact in your community.",
-    },
-    {
-      question: "How do I get started?",
-      answer:
-        "Simply sign up to create a profile, browse through available volunteer opportunities, and start making a difference.",
-    },
-    {
-      question: "Are there any costs involved?",
-      answer: "No, Volunteer Finder is completely free to use for volunteers.",
-    },
-    {
-      question: "How do I connect with NGOs?",
-      answer:
-        "Once you're signed up, you can directly contact NGOs and initiatives listed on the platform to explore volunteer opportunities.",
-    },
-  ];
-
   return (
-    <section
-      className="bg-[#F6F3E4] h-screen">
-      <div className="relative z-10 text-blue-900 px-4 max-w-3xl text-center p-20 mx-auto">
-        <h1 className="text-4xl md:text-5xl font-serif font-bold pb-10">Frequently Asked Questions</h1>
-        <div className="space-y-6">
+    <section className="bg-gradient-to-b from-white to-indigo-50/50 py-20">
+      <div className="max-w-3xl mx-auto px-4">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text">
+              Frequently Asked Questions
+            </span>
+          </h2>
+          <p className="text-gray-600">
+            Find answers to common questions about volunteering with us
+          </p>
+        </div>
+
+        <Accordion 
+          type="single" 
+          collapsible 
+          className="w-full space-y-4"
+        >
           {faqItems.map((item, index) => (
-            <div key={index}>
-              <button
-                onClick={() => toggleAccordion(index)}
-                className="w-full text-left font-serif text-xl py-3 px-5 bg-yellow-400 text-blue-900 rounded-lg shadow-lg mb-2 hover:bg-yellow-500 focus:outline-none transition duration-300"
+            <AccordionItem
+              key={index}
+              value={`item-${index}`}
+              className="group border border-purple-100 rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-all duration-300"
+            >
+              <AccordionTrigger 
+                className="px-6 py-4 hover:no-underline data-[state=open]:bg-indigo-50/50"
               >
-                <div className="flex justify-between items-center">
-                  <span>{item.question}</span>
-                  <span
-                    className={`transform transition-transform duration-300 ${
-                      activeIndex === index ? "rotate-180" : ""
-                    }`}
-                  >
-                    &#9660; {/* Down arrow */}
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-left font-medium text-gray-900 group-hover:text-indigo-600 transition-colors">
+                    {item.question}
                   </span>
+                  <ChevronDown className="h-5 w-5 text-indigo-500 transition-transform duration-300" />
                 </div>
-              </button>
-              {activeIndex === index && (
-                <div className="bg-white text-gray-900 p-4 rounded-lg shadow-md mb-4">
-                  <p>{item.answer}</p>
+              </AccordionTrigger>
+              <AccordionContent className="px-6 py-4">
+                <div className="text-gray-600 leading-relaxed">
+                  {item.answer}
                 </div>
-              )}
-            </div>
+              </AccordionContent>
+            </AccordionItem>
           ))}
+        </Accordion>
+
+        <div className="mt-12 text-center">
+          <p className="text-gray-600">
+            Still have questions?{' '}
+            <a 
+              href="/contact" 
+              className="text-indigo-600 hover:text-indigo-700 font-medium underline-offset-4 hover:underline"
+            >
+              Contact our support team
+            </a>
+          </p>
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Faq;
+export default Faq
