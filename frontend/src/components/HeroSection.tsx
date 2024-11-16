@@ -17,7 +17,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-white opacity-40"></div>
       <div className="relative z-10 max-w-3xl px-4 py-8">
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6  text-blue-900 rounded-full p-3">
-          Welcome to Connect4Good
+          Welcome to CauseConnect
         </h1>
         <p className="text-xl sm:text-2xl mb-8 text-blue-800">
           Connect with local NGOs and initiatives to make a positive impact in

@@ -9,8 +9,8 @@ import {
 
 const faqItems = [
   {
-    question: "What is Volunteer Finder?",
-    answer: "Volunteer Finder helps you connect with local NGOs and initiatives so you can make a positive impact in your community.",
+    question: "What is CauseConnect?",
+    answer: "CauseConnect helps you connect with local NGOs and initiatives so you can make a positive impact in your community.",
   },
   {
     question: "How do I get started?",
@@ -18,7 +18,7 @@ const faqItems = [
   },
   {
     question: "Are there any costs involved?",
-    answer: "No, Volunteer Finder is completely free to use for volunteers.",
+    answer: "No, CauseConnect is completely free to use for volunteers.",
   },
   {
     question: "How do I connect with NGOs?",
