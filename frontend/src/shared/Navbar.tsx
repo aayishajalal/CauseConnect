@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between items-center">
           <Link to="/" className="text-xl font-semibold text-white font-serif flex items-center space-x-2">
             <Heart className="w-6 h-6 text-yellow-400" fill="currentColor" />
-            <span>Connect4Good</span>
+            <span>CauseConnect</span>
           </Link>
 
           <div className="hidden md:flex items-center space-x-8">
