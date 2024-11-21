@@ -9,6 +9,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import ArcCarousel from "../components/ui/carousel";
 import TopVolunteers from "../components/ui/carousel";
+import Marquee from "@/shared/marquee";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -64,6 +65,7 @@ const Homepage: React.FC = () => {
     <div className="homepage-container">
       <section className="hero-section">
         <HeroSection />
+        <Marquee/>
       </section>
       
       {/* <section><EventsStack /> </section> */}
