@@ -1,4 +1,4 @@
-# Connect4Good
+# CauseConnect
 Cause Connect is a web application that helps users find and connect with volunteer opportunities organized by local NGOs and community initiatives. The app aims to bridge the gap between volunteers and organizations, allowing for easy event discovery, registration, and participation.
 
 
