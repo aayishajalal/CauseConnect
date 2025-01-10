@@ -5,13 +5,14 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Button from '../shared/Button';
+import { useAuth } from '@/components/hooks/authContext';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const location = useLocation();
+  const { setIsLoggedIn } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,11 +20,12 @@ const Login: React.FC = () => {
       const response = await axios.post(
         'http://localhost:5000/api/users/login',
         { username, password },
-        { withCredentials: true } // Allows cookies for authentication
+        { withCredentials: true }
       );
 
       console.log('Login successful:', response.data);
       localStorage.setItem('token', response.data.token);
+      setIsLoggedIn(true); // Update the global login state
       navigate('/events');
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
