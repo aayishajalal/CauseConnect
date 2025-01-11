@@ -9,7 +9,7 @@ export const signup = async (req, res) => {
         const{username, email, password, role} = req.body;
         const user=await User.findOne({username})
         if(user){
-            return res.status(400).json({error:"Username alredy exits"})
+            return res.status(400).json({error:"Username already exists"})
         }
         const salt= await bcrypt.genSalt(10);
         const hashedpassword= await bcrypt.hash(password,salt)

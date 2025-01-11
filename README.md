@@ -60,10 +60,10 @@ Before you begin, make sure you have the following installed:
 Create a .env file in the root of the backend folder and add the following variables:
 - **MongoDB Connection String**
    ```plaintext
-   DATABASE_URL=mongodb+srv://<username>:<password>@cluster0.mongodb.net/<your-database>?retryWrites=true&w=majority
+   MONGO_URL=mongodb+srv://<username>:<password>@cluster0.mongodb.net/<your-database>?retryWrites=true&w=majority
 - **JWT SECRET**
    ```plaintext
-   JWT_SECRET=your_jwt_secret_key
+   JWT_KEY=your_jwt_secret_key
    JWT_EXPIRES_IN=90d
 - **PORT**      
    ```plaintext
@@ -72,12 +72,12 @@ Create a .env file in the root of the backend folder and add the following varia
 1. Start the Backend Server:
    ```bash
    cd backend
-   npm run dev 
+   npm start
 2. Start the Frontend Development Server:
    ```bash
    cd ../Frontend
-   npm start 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser to view the app.
+   npm run dev 
+3. Open [http://localhost:5173](http://localhost:5173) in your browser to view the app.
       
 ## Future Improvements
 
