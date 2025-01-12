@@ -1,12 +1,9 @@
-
-
-import  { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { saveAs } from 'file-saver'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import type { Blob } from 'buffer'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function VolunteerCertificateGenerator() {
   const [name, setName] = useState('')
@@ -132,40 +129,42 @@ export default function VolunteerCertificateGenerator() {
     <div className="container mx-auto p-4">
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle>Volunteer Certificate and Badge Generator</CardTitle>
+          <CardTitle className='text-3xl'>Volunteer Certificate and Badge Generator</CardTitle>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4">
-            <div>
-              <Label htmlFor="name">Volunteer Name</Label>
-              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter volunteer's name" />
+          <div className="flex flex-row md:flex-row space-y-4 md:space-y-0 md:space-x-6">
+            <form className="space-y-4 flex-1">
+              <div>
+                <Label htmlFor="name">Volunteer Name</Label>
+                <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter volunteer's name" />
+              </div>
+              <div>
+                <Label htmlFor="hours">Volunteer Hours</Label>
+                <Input id="hours" value={hours} onChange={(e) => setHours(e.target.value)} placeholder="Enter number of hours" />
+              </div>
+              <div>
+                <Label htmlFor="organization">Organization Name</Label>
+                <Input id="organization" value={organization} onChange={(e) => setOrganization(e.target.value)} placeholder="Enter organization name" />
+              </div>
+              <div>
+                <Label htmlFor="date">Date</Label>
+                <Input id="date" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+              </div>
+            </form>
+            <div className="flex-1 flex flex-col items-center space-y-4">
+              <div className="w-full max-w-md">
+                <canvas ref={certificateCanvasRef} width={600} height={500} className="w-full h-auto border border-gray-300" />
+              </div>
+              <div className="w-full max-w-[200px]">
+                <canvas ref={badgeCanvasRef} width={200} height={200} className="w-full h-auto" />
+              </div>
+              <div className="flex space-x-4">
+                <Button onClick={downloadCertificate} disabled={!name || !hours || !organization || !date}>Download Certificate</Button>
+                <Button onClick={downloadBadge} disabled={!name || !hours || !organization || !date}>Download Badge</Button>
+              </div>
             </div>
-            <div>
-              <Label htmlFor="hours">Volunteer Hours</Label>
-              <Input id="hours" value={hours} onChange={(e) => setHours(e.target.value)} placeholder="Enter number of hours" />
-            </div>
-            <div>
-              <Label htmlFor="organization">Organization Name</Label>
-              <Input id="organization" value={organization} onChange={(e) => setOrganization(e.target.value)} placeholder="Enter organization name" />
-            </div>
-            <div>
-              <Label htmlFor="date">Date</Label>
-              <Input id="date" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-            </div>
-          </form>
+          </div>
         </CardContent>
-        <CardFooter className="flex flex-col items-center space-y-4">
-          <div className="w-full max-w-md">
-            <canvas ref={certificateCanvasRef} width={600} height={500} className="w-full h-auto border border-gray-300" />
-          </div>
-          <div className="w-full max-w-[200px]">
-            <canvas ref={badgeCanvasRef} width={200} height={200} className="w-full h-auto" />
-          </div>
-          <div className="flex space-x-4">
-            <Button onClick={downloadCertificate} disabled={!name || !hours || !organization || !date}>Download Certificate</Button>
-            <Button onClick={downloadBadge} disabled={!name || !hours || !organization || !date}>Download Badge</Button>
-          </div>
-        </CardFooter>
       </Card>
     </div>
   )
